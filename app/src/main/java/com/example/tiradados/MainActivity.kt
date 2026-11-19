@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bindingMain : ActivityMainBinding  //Para referenciar a las vistas.
     private var sum : Int = 0
 
+    private var booleano = false;
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +85,7 @@ class MainActivity : AppCompatActivity() {
     solución que prefiráis.
      */
     private fun sheduleRun() {
+
 
         val schedulerExecutor = Executors.newSingleThreadScheduledExecutor()
         val msc = 1000
