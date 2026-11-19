@@ -1,5 +1,6 @@
 package com.example.tiradados
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -159,6 +160,10 @@ Método que lanza los tres dados a partir de 3 aleatorios.
         runOnUiThread{
         if(numerin == 1){
             Toast.makeText(this@MainActivity, "Has adivinado el numero", Toast.LENGTH_LONG).show()
+            intent = Intent(this, AdiviScreen::class.java).apply {
+                Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
         }else if (numerin == 0){
             Toast.makeText(this@MainActivity, "No has adivinado el numero", Toast.LENGTH_LONG).show()
         }else if(numerin == -1){
