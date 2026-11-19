@@ -2,8 +2,11 @@ package com.example.tiradados
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.annotation.MainThread
 import com.example.tiradados.databinding.ActivityMainBinding
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -30,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
     private var booleano = false;
 
+    private var numerin = 2;
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +49,13 @@ class MainActivity : AppCompatActivity() {
     private fun initEvent() {
         bindingMain.txtResultado.visibility = View.INVISIBLE
         bindingMain.imageButton.setOnClickListener{
-            bindingMain.txtResultado.visibility = View.VISIBLE
-            game()  //comienza el juego
+            if(!booleano) {
+                bindingMain.txtResultado.visibility = View.VISIBLE
+                game()  //comienza el juego
+            }else{
+                Toast.makeText(this, "No puedes volver a pulsar hasta que se acabe la accion",
+                    Toast.LENGTH_LONG).show()
+            }
 
         }
     }
@@ -86,13 +96,14 @@ class MainActivity : AppCompatActivity() {
      */
     private fun sheduleRun() {
 
-
         val schedulerExecutor = Executors.newSingleThreadScheduledExecutor()
         val msc = 1000
         for (i in 1..5){//lanzamos 5 veces el dado
             schedulerExecutor.schedule(
+
                 {
-                throwDadoInTime()  //Lanzo los tres dados.
+                    booleano = true;
+                    throwDadoInTime()  //Lanzo los tres dados.
                 },
                 msc * i.toLong(), TimeUnit.MILLISECONDS)
         }
@@ -101,7 +112,6 @@ class MainActivity : AppCompatActivity() {
             viewResult()
         },
             msc  * 7.toLong(), TimeUnit.MILLISECONDS)
-
         schedulerExecutor.shutdown()  //Ya no aceptamos más hilos.
 
     }
@@ -121,7 +131,7 @@ Método que lanza los tres dados a partir de 3 aleatorios.
         for (i in 0..3) //cambio las imagenes, a razón de los aleatorios.
             selectView(imagViews[i], numDados[i])
 
-    }
+}
 
 
     /*
@@ -136,7 +146,6 @@ Método que lanza los tres dados a partir de 3 aleatorios.
             5 -> imgV.setImageResource(R.drawable.dado5);
             6 -> imgV.setImageResource(R.drawable.dado6);
         }
-
     }
 
 
@@ -145,7 +154,34 @@ Método que lanza los tres dados a partir de 3 aleatorios.
      */
     private fun viewResult() {
         bindingMain.txtResultado.text = sum.toString()
-        println(sum)
+        verifier(sum)
+        booleano = false;
+        runOnUiThread{
+        if(numerin == 1){
+            Toast.makeText(this@MainActivity, "Has adivinado el numero", Toast.LENGTH_LONG).show()
+        }else if (numerin == 0){
+            Toast.makeText(this@MainActivity, "No has adivinado el numero", Toast.LENGTH_LONG).show()
+        }else if(numerin == -1){
+            Toast.makeText(this@MainActivity, "Ta vacio", Toast.LENGTH_LONG).show()
+        }
+      }
+
     }
+
+    private fun verifier(suma : Int = 0) {
+        var valorC = bindingMain.NumeroField.text.toString().toIntOrNull()
+
+        if(valorC != null) {
+            if (suma == valorC) {
+                numerin = 1
+            } else {
+              numerin = 0
+            }
+        }else{
+           numerin = -1
+        }
+
+    }
+
 
 }

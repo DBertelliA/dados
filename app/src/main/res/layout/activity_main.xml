@@ -46,6 +46,8 @@
         app:layout_constraintTop_toBottomOf="@+id/imagview_dado2"
         app:srcCompat="@drawable/dado1" />
 
+
+
     <TextView
         android:id="@+id/txt_resultado"
         android:layout_width="177dp"
@@ -60,5 +62,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imagview_dado3"
         app:layout_constraintVertical_bias="0.511" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="361dp"
+        android:layout_height="57dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_resultado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagview_dado3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/NumeroField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Pon un numero del 3 al 18 antes de tirar" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
